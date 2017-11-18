@@ -1,4 +1,6 @@
-FROM python:3
+FROM resin/raspberrypi3-python:3
+
+RUN [ "cross-build-start" ]
 
 # Install TA-lib
 RUN apt-get update && apt-get -y install build-essential && apt-get clean
@@ -9,15 +11,13 @@ RUN curl -L http://prdownloads.sourceforge.net/ta-lib/ta-lib-0.4.0-src.tar.gz | 
   cd .. && rm -rf ta-lib
 ENV LD_LIBRARY_PATH /usr/local/lib
 
-# Prepare environment
 RUN mkdir /freqtrade
 WORKDIR /freqtrade
-
-# Install dependencies
 COPY requirements.txt /freqtrade/
 RUN pip install -r requirements.txt
-
-# Install and execute
 COPY . /freqtrade/
 RUN pip install -e .
+
+RUN [ "cross-build-end" ]
+
 CMD ["freqtrade"]
