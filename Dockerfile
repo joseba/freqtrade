@@ -1,4 +1,4 @@
-FROM python:3.6.2
+FROM python:3
 
 # Install TA-lib
 RUN apt-get update && apt-get -y install build-essential && apt-get clean
